@@ -3,7 +3,7 @@ options:
   docker: true
 pipelines:
   branches:
-    my_branch:
+    master:
       - step:
           deployment: myenv
           services:
