@@ -1,0 +1,9 @@
+auto_deployment:
+  image: &{AWS_ID}.dkr.ecr.us-east-2.2.amazonaws.com/auto_deployment:${
+  container_name: auto_deployment
+  restart: always
+  env_file:
+    --envfile
+  ports:
+    - "8000:8000"
+  command: 'python3 manage.py runserver'

@@ -1,0 +1,26 @@
+image: python:3.6.8
+options:
+  docker: true
+pipelines:
+  branches:
+    my_branch:
+      - step:
+          deployment: myenv
+          services:
+            - docker
+          script:
+            - chmod +x ./start.sh
+            - chmod 777 ./start.sh
+            - export export AWS_DEFAULT_REGION="$REGION"
+            - export AWS_ACCESS_KEY_ID=$AWS_ACCESS
+            - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET
+            - export IMAGE_REPO_NAME=$IMG_REPOSITORY
+            - export AWS_ACCOUNT_ID=$AWS_ID
+            - export IMAGE_TAG=$IMG_TAG
+            - pip install awscli
+            - $(aws ecr get-login --no-include-email --region ${REGION})
+            - docker build -t auto_deployment:${IMG_TAG} .
+            - docker tag auto_deployment:${IMG_TAG} ${AWS_ID}.dkr.ecr.us-east-2.amazonaws.com/auto_deployment:${IMG_TAG}
+            - echo "Pushing the Docker image..."
+            - docker push ${AWS_ID}.dkr.ecr.us-east-2.amazonaws.com/auto_deployment:${IMG_TAG}
+            - echo "pushed"
