@@ -10,7 +10,7 @@ RUN pip install -r requirements.txt
 
 ENV env $env
 
-CMD ["python3 manage.py runserver"]
+CMD ["./run.sh"]
 
 
 EXPOSE 8000
